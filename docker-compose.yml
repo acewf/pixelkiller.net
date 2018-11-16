@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    expose:
+      - 4000
+    environment: 
+      NODE_ENV: production
+      VIRTUAL_HOST: pixelkiller.net
+      VIRTUAL_PORT: 4000
+      LETSENCRYPT_HOST: pixelkiller.net
+      LETSENCRYPT_EMAIL: info@pixelkiller.net
+    restart: always
+    command: ["npm", "run", "start"]
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

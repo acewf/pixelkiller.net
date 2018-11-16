@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    expose:
+      - 3000
+    environment: 
+      NODE_ENV: production
+      VIRTUAL_HOST: localhost.lelesweets.london, localhost.lelesweets.kitchen, lelesweets.co.uk
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: localhost.lelesweets.london, localhost.lelesweets.kitchen, localhost.lelesweets.co.uk
+      LETSENCRYPT_EMAIL: info@lelesweets.london, info@lelesweets.kitchen, info@lelesweets.co.uk
+    restart: always
+    command: ["npm", "run", "start"]
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

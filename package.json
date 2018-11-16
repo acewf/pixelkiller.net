@@ -1,0 +1,14 @@
+{
+  "name": "pixelkiller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "express": "latest"
+  },
+  "scripts": {
+    "start": "node src/index"
+  },
+  "author": "",
+  "license": "ISC"
+}
