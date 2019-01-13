@@ -9,7 +9,7 @@ services:
       - 4000
     environment: 
       NODE_ENV: production
-      VIRTUAL_HOST: pixelkiller.net
+      VIRTUAL_HOST: pixelkiller.net, www.pixelkiller.net
       VIRTUAL_PORT: 4000
       LETSENCRYPT_HOST: pixelkiller.net
       LETSENCRYPT_EMAIL: info@pixelkiller.net
