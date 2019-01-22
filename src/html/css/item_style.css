@@ -1,0 +1,58 @@
+.workcontain > .centercontent{
+	text-align: center;
+}
+.contentContainer > .project-imgcontainer{
+	border-color: rgba(255, 255, 255, 0.1);
+	border-width: 2px;
+	border-style: solid;
+	min-width: 278px;
+	min-height: 150px;
+	position: relative;
+}
+.contentContainer > .project-tag{
+
+}
+.contentContainer > .project-name{
+
+}
+
+
+.preloader{
+	display: inline-block;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	-webkit-transform: translate(-50%, -50%);
+	overflow: hidden;
+}
+.preloaderSize{
+	width: 60px;
+	height: 60px;
+}
+div > img.imagePreload{
+	clear: both;
+	position: relative;
+	z-index: 1;
+}
+
+div > div.imagePreload{
+	clear: both;
+	position: absolute;
+	z-index: 1;
+	width: 60px;
+	height: 60px;
+	background-image: url('../img/smallogo.png');
+	background-color: #FFF;
+	background-blend-mode: multiply;
+}
+
+div > div.overprogress{
+	clear: both;
+	width: 58px;
+	background-color: #00ab0c;
+	position: absolute;
+	z-index: 2;
+	height: 1px;
+	margin: 1px;
+	opacity: 0.4;
+}

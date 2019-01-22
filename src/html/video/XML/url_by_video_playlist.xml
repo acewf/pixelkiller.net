@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<playlist>
+
+	<vid src="video/golfers.flv" desc="Quicktime compress to FLVQuicktime compress to FLVQuicktime compress to FLVQuicktime compress to FLVQuicktime compress OTHER to FLVQuicktime compress to FLVQuicktime compress to FLVQuicktime compress to FLV"/>
+	<vid src="video/video04.flv" desc="Quicktime compress to FLV MAIS TESTES PARA VER SE ISTO ANDA"/>
+	<vid src="video/video03.flv" desc="Quicktime compress to FLV"/>
+	<vid src="video/video01.flv" desc="Youtube - FLV"/>	
+	<vid src="video/Sam Sparros.mp3" desc="Quicktime - HD"/>
+	<vid src="video/02-linkin_park-from_the_inside.mp3" desc="02-linkin_park-from_the_inside.mp3"/>
+
+</playlist>
