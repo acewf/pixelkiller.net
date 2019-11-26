@@ -1,9 +1,5 @@
-console.log('\'Allo \'Allo!');
-
 
 function init(){ 
-	console.log('run');
-	console.log($(".he-view a[rel^='prettyPhoto']"));
 	$(".he-view a[rel^='prettyPhoto']").prettyPhoto({
 	theme:'pp_default',
 	show_title:1,

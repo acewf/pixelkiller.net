@@ -9,10 +9,10 @@ services:
       - 3000
     environment: 
       NODE_ENV: production
-      VIRTUAL_HOST: localhost.lelesweets.london, localhost.lelesweets.kitchen, lelesweets.co.uk
+      VIRTUAL_HOST: localhost.pixelkiller.net
       VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: localhost.lelesweets.london, localhost.lelesweets.kitchen, localhost.lelesweets.co.uk
-      LETSENCRYPT_EMAIL: info@lelesweets.london, info@lelesweets.kitchen, info@lelesweets.co.uk
+      LETSENCRYPT_HOST: localhost.pixelkiller.net
+      LETSENCRYPT_EMAIL: info@pixelkiller.net
     restart: always
     command: ["npm", "run", "start"]
 
