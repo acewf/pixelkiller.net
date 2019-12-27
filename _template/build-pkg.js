@@ -1,13 +1,13 @@
-const fs = require('fs');
+const fs = require('fs')
 
-const type = process.argv[2];
+const type = process.argv[2]
 
-const pkg = require('../package_template.json');
+const pkg = require('../package_template.json')
 for (const key in pkg['merge-configs'][type]) {
-	Object.assign(pkg[key], pkg['merge-configs'][type][key]);
+  Object.assign(pkg[key], pkg['merge-configs'][type][key])
 }
-delete pkg['merge-configs'];
+delete pkg['merge-configs']
 fs.writeFileSync(
-	__dirname + '/../package.json',
-	JSON.stringify(pkg, null, '  ') + '\n'
-);
+  __dirname + '/../package.json',
+  JSON.stringify(pkg, null, '  ') + '\n'
+)

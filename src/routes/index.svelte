@@ -1,5 +1,12 @@
+<script context="module">
+	export let some = 1;
+	some = 2;
+</script>
+
 <style>
-	h1, figure, p {
+	h1,
+	figure,
+	p {
 		text-align: center;
 		margin: 0 auto;
 	}
@@ -36,7 +43,7 @@
 	<title>Sapper project template</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<h1>Great success! {some}</h1>
 
 <figure>
 	<img alt='Borat' src='great-success.png'>
