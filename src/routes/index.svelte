@@ -1,6 +1,5 @@
 <script context="module">
 	export let some = 1;
-	some = 2;
 </script>
 
 <style>

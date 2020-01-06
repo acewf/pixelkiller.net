@@ -1,12 +1,18 @@
 <script>
+	import SocialLinks from './SocialLinks.svelte';
+	import Logo from './Logo.svelte';
 	export let segment;
 </script>
 
 <style>
 	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
+		font-family: KarmaticArcade, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+		background-color: black;
+		border-bottom: 1px solid rgba(25, 172, 172, 0.1);
 		font-weight: 300;
 		padding: 0 1em;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	ul {
@@ -36,7 +42,7 @@
 		content: '';
 		width: calc(100% - 1em);
 		height: 2px;
-		background-color: rgb(255,62,0);
+		background-color: rgb(255, 62, 0);
 		display: block;
 		bottom: -1px;
 	}
@@ -49,12 +55,16 @@
 </style>
 
 <nav>
-	<ul>
-		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
-		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
+	<div>
+		<Logo />
+		<ul>
+			<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
+			<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
 
-		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
+			<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
 		     the blog data when we hover over the link or tap it on a touchscreen -->
-		<li><a rel=prefetch class:selected='{segment === "blog"}' href='blog'>blog</a></li>
-	</ul>
+			<li><a rel=prefetch class:selected='{segment === "blog"}' href='blog'>blog</a></li>
+		</ul>
+	</div>
+	<SocialLinks />
 </nav>

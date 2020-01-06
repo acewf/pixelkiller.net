@@ -34,3 +34,35 @@ code {
 		font-size: 16px;
 	}
 }
+
+@font-face {
+	font-family: 'ColorBasic';
+	src: url('fonts/ColorBasic-Regular.woff2') format('woff2'),
+			url('fonts/ColorBasic-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Spaceboy';
+	src: url('fonts/Spaceboy.woff2') format('woff2'),
+			url('fonts/Spaceboy.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'KarmaticArcade';
+	src: url('fonts/KarmaticArcade.woff2') format('woff2'),
+			url('fonts/KarmaticArcade.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Blox';
+	src: url('fonts/BloxBRK.woff2') format('woff2'),
+			url('fonts/BloxBRK.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}

@@ -6,6 +6,10 @@ import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
+import svg from 'rollup-plugin-svg-import';
+import alias from '@rollup/plugin-alias';
+import path from 'path';
+import autoPreprocess from 'svelte-preprocess';
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
@@ -18,11 +22,27 @@ const onwarn = (warning, onwarn) =>
 const dedupe = importee =>
   importee === 'svelte' || importee.startsWith('svelte/')
 
+const customResolver = resolve({
+  extensions: ['.mjs', '.js', '.jsx', '.json', '.sass', '.scss', '.svelte']
+});
+const projectRootDir = path.resolve(__dirname);
+
+const aliasConfig = alias({
+  entries: [
+    {
+      find: /^@/g, replacement: path.resolve(projectRootDir, 'src')
+    },
+  ],
+  customResolver
+})
+
 export default {
   client: {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
+      aliasConfig,
+      svg({ stringify: true }),
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -31,6 +51,7 @@ export default {
         dev,
         hydratable: true,
         emitCss: true,
+        preprocess: autoPreprocess()
       }),
       resolve({
         browser: true,
@@ -39,33 +60,33 @@ export default {
       commonjs(),
 
       legacy &&
-        babel({
-          extensions: ['.js', '.mjs', '.html', '.svelte'],
-          runtimeHelpers: true,
-          exclude: ['node_modules/@babel/**'],
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                targets: '> 0.25%, not dead',
-              },
-            ],
+      babel({
+        extensions: ['.js', '.mjs', '.html', '.svelte'],
+        runtimeHelpers: true,
+        exclude: ['node_modules/@babel/**'],
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              targets: '> 0.25%, not dead',
+            },
           ],
-          plugins: [
-            '@babel/plugin-syntax-dynamic-import',
-            [
-              '@babel/plugin-transform-runtime',
-              {
-                useESModules: true,
-              },
-            ],
+        ],
+        plugins: [
+          '@babel/plugin-syntax-dynamic-import',
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              useESModules: true,
+            },
           ],
-        }),
+        ],
+      }),
 
       !dev &&
-        terser({
-          module: true,
-        }),
+      terser({
+        module: true,
+      }),
     ],
 
     onwarn,
@@ -75,6 +96,8 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
+      aliasConfig,
+      svg({ stringify: true }),
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -82,6 +105,7 @@ export default {
       svelte({
         generate: 'ssr',
         dev,
+        preprocess: autoPreprocess()
       }),
       resolve({
         dedupe,
@@ -90,7 +114,7 @@ export default {
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules ||
-        Object.keys(process.binding('natives'))
+      Object.keys(process.binding('natives'))
     ),
 
     onwarn,
