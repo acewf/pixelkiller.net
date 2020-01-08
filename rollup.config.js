@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
+import glsl from 'rollup-plugin-glsl';
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
 
@@ -23,6 +24,9 @@ export default {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
+      glsl({
+        include: ['**/*.frag', '**/*.vert']
+      }),
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -39,33 +43,33 @@ export default {
       commonjs(),
 
       legacy &&
-        babel({
-          extensions: ['.js', '.mjs', '.html', '.svelte'],
-          runtimeHelpers: true,
-          exclude: ['node_modules/@babel/**'],
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                targets: '> 0.25%, not dead',
-              },
-            ],
+      babel({
+        extensions: ['.js', '.mjs', '.html', '.svelte'],
+        runtimeHelpers: true,
+        exclude: ['node_modules/@babel/**'],
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              targets: '> 0.25%, not dead',
+            },
           ],
-          plugins: [
-            '@babel/plugin-syntax-dynamic-import',
-            [
-              '@babel/plugin-transform-runtime',
-              {
-                useESModules: true,
-              },
-            ],
+        ],
+        plugins: [
+          '@babel/plugin-syntax-dynamic-import',
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              useESModules: true,
+            },
           ],
-        }),
+        ],
+      }),
 
       !dev &&
-        terser({
-          module: true,
-        }),
+      terser({
+        module: true,
+      }),
     ],
 
     onwarn,
@@ -75,6 +79,9 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
+      glsl({
+        include: ['**/*.frag', '**/*.vert']
+      }),
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -90,7 +97,7 @@ export default {
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules ||
-        Object.keys(process.binding('natives'))
+      Object.keys(process.binding('natives'))
     ),
 
     onwarn,
