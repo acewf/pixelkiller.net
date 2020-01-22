@@ -5,8 +5,6 @@ class GL {
     this.canvas = canvas;
     this.gl = null;
     this.program = null;
-    this.width = canvas.clientWidth;
-    this.height = canvas.clientWidth;
     this.init(options, vert, frag);
   }
 
@@ -14,12 +12,12 @@ class GL {
     this.gl = WebGL.getContext(this.canvas, options);
     this.program = this.createProgram(vert, frag);
     this.useProgram(this.program);
-    this.updateViewPort();
+    this.updateViewPort(this.canvas.width, this.canvas.height);
   }
 
   createProgram(vert, frag) {
     const program = WebGL.createProgram(this.gl, vert, frag);
-
+    WebGL.createBuffers(this.gl, program);
     return program;
   }
 
@@ -27,9 +25,15 @@ class GL {
     this.program = program;
     this.gl.useProgram(program);
   }
-  createTexture(source, i, wrap, isCube) {
+  createTexture(source, i, wrap, { isCube = false, isVideo = false, is3DTexture = false }) {
     if (isCube) {
       return WebGL.createCubeTexture(this.gl, source, i, wrap);
+    }
+    if (isVideo) {
+      return WebGL.videoTexture(this.gl, source, i);
+    }
+    if (is3DTexture) {
+      return WebGL.create3DTexture(this.gl, source, i);
     }
     return WebGL.createTexture(this.gl, source, i, wrap);
   }
@@ -41,18 +45,22 @@ class GL {
     WebGL.activeTexture(this.gl, i);
   }
 
-  updateTexture(source) {
+  updateTexture(source, texture) {
+    if (texture) {
+      WebGL.bindTexture(this.gl, texture)
+    }
+
     WebGL.updateTexture(this.gl, source);
   }
 
   draw() {
     WebGL.setRectangle(this.gl, -1, -1, 2, 2);
-    this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+    this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, 6, 1);
+    //this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
   }
 
-  updateViewPort() {
-    console.log(this.width)
-    // this.gl.viewport(0, 0, this.width, this.height);
+  updateViewPort(width, height) {
+    this.gl.viewport(0, 0, width, height);
   }
 }
 

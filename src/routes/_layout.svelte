@@ -1,18 +1,19 @@
 <script>
 	import { onMount } from 'svelte';
 	import Nav from '../components/Nav.svelte';
-	import WebGl from '../webgl';
+	import WebGl, { getBin } from '../webgl';
 	import SmokeFrag from '../shaders/smoke.frag';
 	import SmokeVert from '../shaders/smoke.vert';
 
 	let smokeAnim = null;
-
-
 	onMount(() => {
 		const mm = window.matchMedia('(max-width: 599px)');
 		const textures = ['http://localhost:3000/smoke-texture.png'];
 		const canvas = document.getElementById('webcanvas');
-		smokeAnim = new WebGl({ canvas, textures, vertShader: SmokeVert, fragShader: SmokeFrag });
+		smokeAnim = new WebGl({
+			canvas, textures,
+			vertShader: SmokeVert, fragShader: SmokeFrag
+		});
 
 		return () => {
 		};
@@ -35,13 +36,14 @@
 		width: 100%;
 		position: absolute;
 		bottom: 0;
+		left: 0;
 		height: 400px;
-		z-index: -1;
+		z-index: 1;
 	}
 </style>
 
 <Nav {segment} />
-<canvas id="webcanvas" />
 <main>
 	<slot></slot>
+	<canvas id="webcanvas" />
 </main>
