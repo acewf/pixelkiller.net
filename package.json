@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build",
-    "export": "sapper export",
+    "export": "EXPORT=true sapper export",
+    "targetexport": "EXPORT=true sapper export --entry \"/blog /404\"",
+    "myexport": "node runme",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
