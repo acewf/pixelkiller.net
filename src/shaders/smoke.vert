@@ -1,8 +1,7 @@
-#version 300 es
 precision mediump float;
 
-in vec4 a_position;
-out vec2 v_position;
+attribute vec4 a_position;
+varying vec2 v_position;
 
 void main(){
   v_position=(a_position.xy+1.)*.5;

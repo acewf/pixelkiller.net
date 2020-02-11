@@ -1,5 +1,4 @@
 import GL from './gl-obj';
-// import { snoise } from './noise3D';
 
 export const getBin = (src) => {
   return new Promise((resolve) => {
@@ -25,14 +24,16 @@ const getDPI = () => {
 
 function loadTexture(index, file) {
   return new Promise((resolve) => {
-    const image = new Image();
+    if (file.url) {
+      const image = new Image();
+      image.addEventListener('load', () => {
+        resolve(image);
+      });
+      image.src = file.url;
+    } else {
 
-    image.addEventListener('load', () => {
-      // haze.gl.createUniform('1i', options.name, index);
-      resolve(image);
-    });
-    console.log('Load File:', file)
-    image.src = file;
+      resolve(file);
+    }
   });
 }
 
@@ -53,8 +54,8 @@ class WebGl {
       canvas.clientWidth * dpi,
       canvas.clientHeight * dpi
     );
-    this.update3DTextures();
-    // this.updateTextures(textures);
+    // this.update3DTextures();
+    this.updateTextures(textures);
     /// this.updateVideoTextures(videoTextures);
 
     window.addEventListener('resize', this.resize.bind(this));
@@ -71,6 +72,16 @@ class WebGl {
     const scope = this;
     const asset = await getBin('http://localhost:3000/cube.bin');
     scope.gl.createUniform('1i', `texture${0}`, scope.nextTextureIndex);
+    // console.log('Asset:', asset)
+    /* var SIZE = 52;
+    var data = new Uint8Array(SIZE * SIZE * SIZE);
+    for (var k = 0; k < SIZE; ++k) {
+      for (var j = 0; j < SIZE; ++j) {
+        for (var i = 0; i < SIZE; ++i) {
+          data[i + j * SIZE + k * SIZE * SIZE] = snoise([i, j, k]) * 256;
+        }
+      }
+    } */
     scope.gl.createTexture(
       asset,
       scope.nextTextureIndex,
@@ -85,11 +96,11 @@ class WebGl {
     const loadedTextures = await this.getTextures(textures);
     loadedTextures.forEach((asset, index) => {
       scope.gl.createUniform('1i', `texture${index}`, scope.nextTextureIndex);
+
       scope.gl.createTexture(
         asset,
         scope.nextTextureIndex,
-        null,
-        { isCube: true }
+        null
       );
       scope.nextTextureIndex++;
     });
@@ -122,7 +133,6 @@ class WebGl {
     const update = (now) => {
       if (scope.isRendering) {
         scope.gl.createUniform('1f', 'time', now * loops);
-
         this.videoTextures.forEach(({ texture, source }) => {
           scope.gl.updateTexture(source, texture);
         });

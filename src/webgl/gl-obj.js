@@ -25,7 +25,8 @@ class GL {
     this.program = program;
     this.gl.useProgram(program);
   }
-  createTexture(source, i, wrap, { isCube = false, isVideo = false, is3DTexture = false }) {
+
+  createTexture(source, i, wrap, { isCube = false, isVideo = false, is3DTexture = false } = {}) {
     if (isCube) {
       return WebGL.createCubeTexture(this.gl, source, i, wrap);
     }
@@ -37,6 +38,7 @@ class GL {
     }
     return WebGL.createTexture(this.gl, source, i, wrap);
   }
+
   createUniform(type, name, ...v) {
     WebGL.createUniform(this.gl, this.program, type, name, ...v);
   }

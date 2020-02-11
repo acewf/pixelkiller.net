@@ -2,14 +2,17 @@
 	import { onMount } from 'svelte';
 	import Nav from '../components/Nav.svelte';
 	import WebGl, { getBin } from '../webgl';
+	import { generate } from '../utils/generateNoise';
 	import SmokeFrag from '../shaders/smoke.frag';
 	import SmokeVert from '../shaders/smoke.vert';
 
 	let smokeAnim = null;
 	onMount(() => {
 		const mm = window.matchMedia('(max-width: 599px)');
-		const textures = ['http://localhost:3000/smoke-texture.png'];
 		const canvas = document.getElementById('webcanvas');
+		const texture = generate();
+		const textures = [texture];
+
 		smokeAnim = new WebGl({
 			canvas, textures,
 			vertShader: SmokeVert, fragShader: SmokeFrag

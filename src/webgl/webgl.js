@@ -26,10 +26,8 @@ function error(msg) {
 
 export function createShader(gl, script, type) {
   const shader = gl.createShader(type);
-
   gl.shaderSource(shader, script);
   gl.compileShader(shader);
-
   const compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
 
   if (!compiled) {
@@ -37,7 +35,6 @@ export function createShader(gl, script, type) {
 
     error(`Error compiling shader '${shader}':${lastError}`);
     gl.deleteShader(shader);
-
     return null;
   }
 
@@ -49,7 +46,6 @@ export function createProgram(gl, vertexScript, fragScript) {
   const fragShader = createShader(gl, fragScript, gl.FRAGMENT_SHADER);
 
   const program = gl.createProgram();
-
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragShader);
 

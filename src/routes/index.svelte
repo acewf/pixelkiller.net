@@ -1,8 +1,3 @@
-<script context="module">
-	export let some = 1;
-	some = 2;
-</script>
-
 <style>
 	h1,
 	figure,
@@ -43,7 +38,7 @@
 	<title>Sapper project template</title>
 </svelte:head>
 
-<h1>Great success! {some}</h1>
+<h1>Great success!</h1>
 
 <figure>
 	<img alt='Borat' src='great-success.png'>
