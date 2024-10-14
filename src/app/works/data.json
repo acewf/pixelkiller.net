@@ -1,0 +1,79 @@
+{
+  "works": [
+    {
+      "name": "Torneio CIF",
+      "description": "iOS application for the Portuguese CIF tournaments.",
+      "image": "/assets/portfolio_01.jpg"
+    },
+    {
+      "name": "Casa do Príncipe",
+      "description": "Website for a client in the hospitality area.",
+      "image": "/assets/portfolio_02.jpg"
+    },
+    {
+      "name": "Flow Management Service",
+      "description": "web based application for queue management system.",
+      "image": "/assets/portfolio_03.jpg"
+    },
+    {
+      "name": "Flow Management Service",
+      "description": "web based application for queue management system.",
+      "image": "/assets/portfolio_04.jpg"
+    },
+    {
+      "name": "Wise Madness",
+      "description": "Flash website for a client in the e-commerce area.",
+      "image": "/assets/portfolio_05.jpg"
+    },
+    {
+      "name": "Gibberish",
+      "description": "Website for a client in the translations/localization area.",
+      "image": "/assets/portfolio_06.jpg"
+    },
+    {
+      "name": "Md Moldes",
+      "description": "Flash 3D visualisation for automotive casting company",
+      "image": "/assets/portfolio_07.jpg"
+    },
+    {
+      "name": "Nutri Ventures",
+      "description": "iOS application/game for animated television series.",
+      "image": "/assets/portfolio_08.jpg"
+    },
+    {
+      "name": "Zillian",
+      "description": "Website for a client in the e-commerce area.",
+      "image": "/assets/portfolio_09.jpg"
+    },
+    {
+      "name": "Delta Q",
+      "description": "Flash project for a client in the e-commerce area.",
+      "image": "/assets/portfolio_10.jpg"
+    },
+    {
+      "name": "Final Fantasy VII",
+      "description": "Marketing Website for a well know game franchise",
+      "image": "/assets/portfolio_11.jpg"
+    },
+    {
+      "name": "Life is Strange",
+      "description": "Marketing Website for a AAA game series",
+      "image": "/assets/portfolio_12.jpg"
+    },
+    {
+      "name": "Foamstars",
+      "description": "Marketing Website for a AAA game",
+      "image": "/assets/portfolio_13.jpg"
+    },
+    {
+      "name": "Forspoken",
+      "description": "Marketing Website for a AAA game",
+      "image": "/assets/portfolio_14.jpg"
+    },
+    {
+      "name": "StarOcean",
+      "description": "Marketing Website for a AAA game",
+      "image": "/assets/portfolio_15.jpg"
+    }
+  ]
+}
