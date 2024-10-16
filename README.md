@@ -1,2 +1,11 @@
-# pixelkiller.net
-front end developer personal website
+Website for Pixelkiller
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
