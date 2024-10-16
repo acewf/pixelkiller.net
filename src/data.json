@@ -1,5 +1,5 @@
 {
-  "works": [
+  "projects": [
     {
       "name": "Torneio CIF",
       "description": "iOS application for the Portuguese CIF tournaments.",
@@ -71,9 +71,52 @@
       "image": "/assets/portfolio_14.jpg"
     },
     {
-      "name": "StarOcean",
+      "name": "Star Ocean",
       "description": "Marketing Website for a AAA game",
       "image": "/assets/portfolio_15.jpg"
+    },
+    {
+      "name": "Outriders",
+      "description": "Marketing Website for a AAA game",
+      "image": "/assets/portfolio_16.jpg"
+    },
+    {
+      "name": "Shadow of Tomb Raider",
+      "description": "Marketing Website for a AAA game",
+      "image": "/assets/portfolio_17.jpg"
+    }
+  ],
+  "skills": [
+    {
+      "type": "Frontend",
+      "values": [
+        "React",
+        "Tailwindcss",
+        "Pixi.js",
+        "Typescript",
+        "Svelte"
+      ]
+    },
+    {
+      "type": "Backend",
+      "values": [
+        "Next.js",
+        "Node",
+        "Express",
+        "MongoDB",
+        "OpenAPI",
+        "Nginx"
+      ]
+    },
+    {
+      "type": "Other",
+      "values": [
+        "Git",
+        "Docker",
+        "Gitlab CI/CD",
+        "Shell Script",
+        "Graphql"
+      ]
     }
   ]
 }

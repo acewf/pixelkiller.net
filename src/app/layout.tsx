@@ -3,8 +3,9 @@ import { Roboto } from 'next/font/google'
 import Image from "next/image";
 import "./globals.css";
 import { Email, Git, Linkedin } from "@/components/Icons";
+import Link from 'next/link';
 
-import logo from "./pixelkiller-logo-simpler.jpg"
+import logo from "../assets/pixelkiller-logo-simpler.jpg"
 
 
 export const metadata: Metadata = {
@@ -18,10 +19,9 @@ const roboto = Roboto({
 })
 
 const navItems = [
-  { name: "Skills", href: "#skills" },
-  { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
-  { name: "Works", href: "/works" },
+  { name: "Skills", href: "/#skills" },
+  { name: "About", href: "/#about" },
+  { name: "Projects", href: "/projects" },
 ]
 
 const socialItems = [
@@ -41,22 +41,25 @@ export default function RootLayout({
         className={roboto.className}
       >
         <header className="flex my-2 items-center justify-between max-w-screen-xl mx-auto px-2 sticky top-0 z-50 bg-background">
-          <Image src={logo.src} alt="logo" width={80} height={80} />
+          <Link href="/">
+            <Image src={logo.src} alt="logo" width={80} height={80} />
+          </Link>
+
           <nav className="text-md font-bold mx-4">
             <ul className="flex gap-4 items-center justify-center flex-row uppercase">
               {navItems.map((item) => (
                 <li key={item.name}>
-                  <a href={item.href} className="hover:text-contrast">{item.name}</a>
+                  <Link href={item.href} className="hover:text-contrast">{item.name}</Link>
                 </li>
               ))}
             </ul>
             <span className="absolute -bottom-6 left-0 w-full h-7 bg-gradient-to-t from-transparent to-background block"></span>
           </nav>
         </header>
-        <main className="max-w-screen-xl mx-auto min-h-screen -mb-20">
+        <main className="max-w-screen-xl mx-auto min-h-screen">
           {children}
         </main>
-        <footer className="flex gap-6 flex-wrap items-center justify-center mt-8">
+        <footer className="flex gap-6 flex-wrap items-center justify-center my-8">
           {socialItems.map((item) => (
             <a key={item.name} href={item.href}>
               <span className="sr-only">{item.name}</span>

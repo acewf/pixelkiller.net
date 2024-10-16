@@ -1,96 +1,37 @@
 import React from "@/components/Skills/React";
-import Next from "@/components/Skills/Next";
-import Tailwind from "@/components/Skills/Tailwind";
-import Pixi from "@/components/Skills/Pixi";
+import NextJs from "@/components/Skills/Next";
+import Tailwindcss from "@/components/Skills/Tailwind";
+import PixiJs from "@/components/Skills/Pixi";
 import Node from "@/components/Skills/Node";
 import Express from "@/components/Skills/Express";
-import MongoDB from "@/components/Skills/MongoDB";
+import MongoDb from "@/components/Skills/MongoDB";
 import Git from "@/components/Skills/Git";
 import Docker from "@/components/Skills/Docker";
-import Gitlab from "@/components/Skills/Gitlab";
-import OpenAPI from "@/components/Skills/OpenApi";
+import GitlabCiCd from "@/components/Skills/Gitlab";
+import OpenApi from "@/components/Skills/OpenApi";
 import ShellScript from "@/components/Skills/Shell";
+import Typescript from "@/components/Skills/Typescript";
+import Graphql from "@/components/Skills/Graphql";
+import Svelte from "@/components/Skills/Svelte";
+import Nginx from "@/components/Skills/Nginx";
 
-export {
+const Icons = {
   React,
-  Next,
-  Tailwind,
-  Pixi,
+  NextJs,
+  Tailwindcss,
+  PixiJs,
   Node,
   Express,
-  MongoDB,
+  MongoDb,
   Git,
   Docker,
-  Gitlab,
-  OpenAPI,
+  GitlabCiCd,
+  OpenApi,
   ShellScript,
-};
+  Typescript,
+  Graphql,
+  Svelte,
+  Nginx,
+} as const;
 
-
-const skills = [
-  {
-    type: "Frontend",
-    skills: [
-      {
-        name: "React",
-        icon: React,
-      },
-      {
-        name: "Next.js",
-        icon: Next,
-      },
-      {
-        name: "Tailwindcss",
-        icon: Tailwind,
-      },
-      {
-        name: "Pixi.js",
-        icon: Pixi,
-      },
-    ],
-  },
-  {
-    type: "Backend",
-    skills: [
-      {
-        name: "Node",
-        icon: Node,
-      },
-      {
-        name: "Express",
-        icon: Express,
-      },
-      {
-        name: "MongoDB",
-        icon: MongoDB,
-      },
-      {
-        name: "OpenAPI",
-        icon: OpenAPI,
-      },
-    ],
-  },
-  {
-    type: "Other",
-    skills: [
-      {
-        name: "Git",
-        icon: Git,
-      },
-      {
-        name: "Docker",
-        icon: Docker,
-      },
-      {
-        name: "Gitlab CI/CD",
-        icon: Gitlab,
-      },
-      {
-        name: "Shell Script",
-        icon: ShellScript,
-      },
-    ],
-  },
-];
-
-export default skills;
+export default Icons;
