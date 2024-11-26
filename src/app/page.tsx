@@ -33,7 +33,7 @@ export default async function Home() {
       <Hero />
       <section className="w-full max-w-5xl mx-auto sm:mt-12" id="skills">
         <h2 className="text-3xl font-bold mb-6 uppercase">
-          Skills / Tools
+          Tech Stack
         </h2>
         <div className="flex flex-col sm:grid grid-cols-2 md:grid-cols-3 gap-1 sm:gap-6 bg-contrast p-1 sm:p-4 rounded-lg w-full">
           {skills.map(({ type, values }) => (
