@@ -1,29 +1,291 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;
-  --contrast: 198.44deg 93.2% 59.61%;
+/* ------------------------------------------------------------------ tokens --
+   Colour utilities (bg-ground, text-muted, border-hairline, bg-accent…) resolve
+   to --pk-* custom properties, so a theme only redefines those. `inline` makes
+   each utility reference the --pk-* variable directly. */
+@theme inline {
+  --color-ground: var(--pk-ground);
+  --color-raised: var(--pk-raised);
+  --color-inset: var(--pk-inset);
+  --color-ink: var(--pk-ink);
+  --color-ink-soft: var(--pk-ink-soft);
+  --color-ink-quiet: var(--pk-ink-quiet);
+  --color-muted: var(--pk-muted);
+  --color-faint: var(--pk-faint);
+  --color-line: var(--pk-line);
+  --color-hairline: var(--pk-hairline);
+  --color-accent: var(--pk-accent);
+  --color-on-accent: var(--pk-on-accent);
+  --color-status-good: var(--pk-status-good);
+  --color-status-warn: var(--pk-status-warn);
+  --color-status-info: var(--pk-status-info);
+
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 0 3% 13%;
-    --foreground: 0 0% 93%;
-    --contrast: 198.44deg 93.2% 59.61%;
+/* Fluid type scale, shared by every theme. */
+@theme {
+  --text-hero: clamp(36px, 8.2vw, 128px);
+  --text-hero--line-height: 0.94;
+  --text-hero--letter-spacing: -0.035em;
+  --text-statement: clamp(40px, 7vw, 112px);
+  --text-statement--line-height: 0.98;
+  --text-statement--letter-spacing: -0.035em;
+  --text-section: clamp(34px, 4.6vw, 72px);
+  --text-section--line-height: 1;
+  --text-section--letter-spacing: -0.03em;
+  --text-ai: clamp(34px, 5vw, 80px);
+  --text-ai--line-height: 0.98;
+  --text-ai--letter-spacing: -0.035em;
+  --text-venture: clamp(44px, 5.4vw, 84px);
+  --text-venture--line-height: 0.95;
+  --text-venture--letter-spacing: -0.035em;
+  --text-card: clamp(32px, 3.4vw, 48px);
+  --text-card--line-height: 1;
+  --text-card--letter-spacing: -0.03em;
+  --text-row: clamp(26px, 2.8vw, 42px);
+  --text-row--line-height: 1.05;
+  --text-row--letter-spacing: -0.02em;
+  --text-year: clamp(30px, 2.6vw, 40px);
+  --text-year--line-height: 1;
+  --text-year--letter-spacing: -0.02em;
+  --text-closing: clamp(48px, 8vw, 128px);
+  --text-closing--line-height: 0.94;
+  --text-closing--letter-spacing: -0.04em;
+  --text-email: clamp(22px, 5vw, 76px);
+  --text-email--line-height: 1.15;
+  --text-email--letter-spacing: -0.02em;
+}
+
+/* ------------------------------------------------------------------ themes --
+   WebGL renderers read --pk-ground, --pk-ink, --pk-muted and --pk-accent at
+   mount (hex or rgb()), so a new theme re-colours the scenes too. */
+:root,
+[data-theme="signal"] {
+  color-scheme: dark;
+  --pk-ground: #07080a;
+  --pk-raised: #0e1013;
+  --pk-inset: #0b0c0f;
+  --pk-ink: #ecedee;
+  --pk-ink-soft: #d4d7da;
+  --pk-ink-quiet: #c9ccd0;
+  --pk-muted: #9aa0a6;
+  --pk-faint: #7a8087;
+  --pk-line: #ecedee;
+  --pk-hairline: rgb(236 237 238 / 0.1);
+  --pk-accent: #ff5b37;
+  --pk-on-accent: #07080a;
+  --pk-status-good: #00ffc2;
+  --pk-status-warn: #f5b841;
+  --pk-status-info: #98cbff;
+}
+
+/* -------------------------------------------------------------------- base -- */
+@layer base {
+  body {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: var(--pk-accent);
+    color: var(--pk-on-accent);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--pk-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 }
 
-body {
-  color: hsl(var(--foreground));
-  background: hsl(var(--background));
-  font-family: Arial, Helvetica, sans-serif;
+/* --------------------------------------------------------------- utilities -- */
+@utility shell {
+  width: 100%;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 48px);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@utility section-y {
+  padding-block: clamp(88px, 10vw, 152px);
+}
+
+@utility label-mono {
+  @apply font-mono text-[12px] tracking-[0.08em] uppercase;
+}
+
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition:
+    background-size 0.5s cubic-bezier(0.2, 0.7, 0.1, 1),
+    color 0.3s;
+
+  &:hover {
+    background-size: 100% 2px;
+    color: var(--pk-accent);
+  }
+}
+
+/* ------------------------------------------------------------------ motion --
+   Every revealed element is fully visible by default; animation only runs where
+   the browser supports scroll-driven timelines and the visitor allows motion. */
+@layer components {
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .line-mask > span {
+    display: block;
+    animation: pk-rise 1.25s cubic-bezier(0.16, 0.84, 0.2, 1) both;
+  }
+
+  .line-mask + .line-mask > span {
+    animation-delay: 0.12s;
+  }
+
+  .fade-in {
+    animation: pk-fade 1.2s 0.45s ease both;
+  }
+
+  .word-reveal {
+    display: inline-block;
+  }
+
+  .live-dot {
+    animation: pk-pulse 1.8s ease-in-out infinite;
+  }
+
+  .caret {
+    animation: pk-blink 1.06s steps(1) infinite;
+  }
+
+  /* Hero phase readout, driven by data-phase and --pk-phase-progress, which the
+     hero scene sets on its section. */
+  [data-phase-item] {
+    color: var(--pk-faint);
+    transition: color 0.6s;
+  }
+
+  [data-phase="0"] [data-phase-item="0"],
+  [data-phase="1"] [data-phase-item="1"],
+  [data-phase="2"] [data-phase-item="2"],
+  [data-phase="3"] [data-phase-item="3"] {
+    color: var(--pk-accent);
+  }
+
+  .phase-progress {
+    transform-origin: 0 50%;
+    transform: scaleX(var(--pk-phase-progress, 0));
+  }
+
+  /* The readout describes a live particle field: shown only while the scene is
+     "on". It always keeps its space (the hero content is bottom-anchored, so
+     removing it would shift the headline), whether the scene is starting, its
+     context is lost, or WebGL is off. */
+  [data-phase-readout] {
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.8s ease,
+      visibility 0s linear 0.8s;
+  }
+
+  [data-webgl="on"] [data-phase-readout] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: pk-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0px entry 240px;
+    }
+
+    .word-reveal {
+      animation: pk-word linear both;
+      animation-timeline: view();
+      animation-range: cover 6% cover 32%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line-mask > span,
+  .fade-in,
+  .live-dot,
+  .caret {
+    animation: none !important;
+  }
+}
+
+@keyframes pk-rise {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes pk-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pk-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pk-word {
+  from {
+    opacity: 0.18;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pk-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pk-blink {
+  50% {
+    opacity: 0;
   }
 }
