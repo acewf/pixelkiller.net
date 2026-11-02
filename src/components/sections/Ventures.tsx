@@ -45,6 +45,7 @@ export function Ventures() {
             <p className="font-mono text-[12px] leading-[1.75] tracking-[0.04em] text-muted">{flagship.worksWith}</p>
             <a
               href={flagship.link.href}
+              data-event={flagship.link.event}
               target="_blank"
               rel="noopener noreferrer"
               className="link-underline inline-flex min-h-11 items-center gap-2.5 self-start text-[20px] font-semibold text-ink [font-stretch:110%]"
@@ -71,6 +72,7 @@ export function Ventures() {
           </div>
           <a
             href={open.cta.href}
+            data-event={open.cta.event}
             className={`group inline-flex min-h-[52px] flex-none items-center gap-3.5 rounded-[2px] bg-ground px-[22px] text-base font-semibold text-ink transition-transform duration-300 ${EASE} hover:-translate-y-0.5 focus-visible:outline-on-accent`}
           >
             {open.cta.label}

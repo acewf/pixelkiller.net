@@ -6,6 +6,8 @@
 export interface Link {
   label: string;
   href: string;
+  /** Umami event recorded when the link is clicked (see components/Analytics.tsx). */
+  event?: string;
 }
 
 export interface SectionMeta {
@@ -128,8 +130,8 @@ export const site: SiteContent = {
     eyebrow: "Venture studio · United Kingdom",
     titleLines: ["From pixels", "to production."],
     lead: "Pixelkiller is the venture studio of Pedro Martins. Twenty years building for screens — Flash, games, AAA launches — now pointed at the industries that make things, with AI in the loop.",
-    primary: { label: "See the ventures", href: "/#ventures" },
-    secondary: { label: "Get in touch", href: `mailto:${email}` },
+    primary: { label: "See the ventures", href: "/#ventures", event: "cta-see-ventures" },
+    secondary: { label: "Get in touch", href: `mailto:${email}`, event: "cta-get-in-touch" },
     readout: {
       caption: "Particle field · WebGL2",
       label: "Particle field phases",
@@ -164,7 +166,7 @@ export const site: SiteContent = {
       capabilities: ["Computer vision", "Edge agent", "Closed-loop correction", "Fleet dashboard"],
       worksWith:
         "Works with controllers from GSK, Fanuc, Siemens, Heidenhain, Fagor, Mitsubishi Electric, Haas, Mazak, Okuma",
-      link: { label: "undrd.app", href: "https://undrd.app" },
+      link: { label: "undrd.app", href: "https://undrd.app", event: "outbound-undrd" },
       board: {
         title: "Fleet overview",
         live: "Live",
@@ -195,7 +197,7 @@ export const site: SiteContent = {
       kicker: "Open slot",
       title: "Your industry",
       body: "Running a process on clipboards and spreadsheets? Bring the problem. We bring the stack.",
-      cta: { label: "Pitch a problem", href: `mailto:${email}` },
+      cta: { label: "Pitch a problem", href: `mailto:${email}`, event: "cta-pitch-problem" },
     },
   },
   method: {
@@ -294,11 +296,11 @@ export const site: SiteContent = {
     aside: "Pedro Sousa Martins",
     prompt: "Got an industry still running on clipboards?",
     title: "Let’s rewire it.",
-    email: { label: email, href: `mailto:${email}` },
+    email: { label: email, href: `mailto:${email}`, event: "contact-email" },
     linksLabel: "Elsewhere",
     links: [
-      { label: "LinkedIn", href: "https://pt.linkedin.com/pub/pedro-martins/18/762/302" },
-      { label: "GitHub", href: "https://github.com/acewf" },
+      { label: "LinkedIn", href: "https://pt.linkedin.com/pub/pedro-martins/18/762/302", event: "outbound-linkedin" },
+      { label: "GitHub", href: "https://github.com/acewf", event: "outbound-github" },
     ],
   },
   footer: {

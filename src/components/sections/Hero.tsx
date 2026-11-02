@@ -30,6 +30,7 @@ export function Hero() {
             <div className="mt-7 flex flex-wrap gap-3">
               <a
                 href={hero.primary.href}
+                data-event={hero.primary.event}
                 className={`group inline-flex min-h-[52px] items-center gap-3.5 rounded-[2px] bg-accent px-[22px] text-base font-[650] text-on-accent transition-transform duration-300 ${EASE} hover:-translate-y-0.5`}
               >
                 {hero.primary.label}
@@ -39,6 +40,7 @@ export function Hero() {
               </a>
               <a
                 href={hero.secondary.href}
+                data-event={hero.secondary.event}
                 className={`inline-flex min-h-[52px] items-center rounded-[2px] border border-line/30 px-[22px] text-base font-[550] text-ink transition-[translate,border-color] duration-300 ${EASE} hover:-translate-y-0.5 hover:border-ink`}
               >
                 {hero.secondary.label}
