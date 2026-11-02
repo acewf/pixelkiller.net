@@ -16,6 +16,7 @@ export function Contact() {
         </h2>
         <a
           href={contact.email.href}
+          data-event={contact.email.event}
           className="link-underline mt-[clamp(40px,5vw,72px)] inline-block font-display text-email font-semibold wrap-anywhere text-ink [font-stretch:106%]"
         >
           {contact.email.label}
@@ -28,6 +29,7 @@ export function Contact() {
             <li key={link.href}>
               <a
                 href={link.href}
+                data-event={link.event}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 items-center gap-2 text-ink transition-colors duration-200 hover:text-accent"

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import type { ReactNode } from "react";
+import { Analytics } from "@/components/Analytics";
 import { baseOpenGraph } from "@/content/seo";
 import { site } from "@/content/site";
 import { defaultTheme, themes } from "@/theme/themes";
@@ -39,7 +40,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en-GB" data-theme={defaultTheme} className={`${archivo.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-ground font-sans text-ink antialiased">{children}</body>
+      <body className="bg-ground font-sans text-ink antialiased">
+        {children}
+        <Analytics domain={new URL(site.url).hostname} />
+      </body>
     </html>
   );
 }

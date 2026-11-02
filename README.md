@@ -42,6 +42,7 @@ src/
   theme/themes.ts     theme registry: label + hero renderer per theme
   components/
     Nav.tsx, Footer.tsx, SectionLabel.tsx, icons.tsx
+    Analytics.tsx     Umami tracker and data-event click reporting (client)
     sections/         Hero, Thesis, Ventures, Method, Ai, Story, Contact (server components)
     ventures/         FleetBoard, PartsCounter (client: the illustrative counter)
     ai/AgentLog.tsx
@@ -124,3 +125,18 @@ Copy lives in `src/content/site.ts` and nowhere else. A translation (for
 example `/pt`) is a second object of the same `SiteContent` type. Adding one
 means a locale route segment and handing each section the content for that
 locale instead of importing `site` directly; the markup stays the same.
+
+## Analytics
+
+Self-hosted Umami at https://umami.undrd.app (website "pixelkiller"), loaded by
+`src/components/Analytics.tsx`. It is cookieless, so there is no consent
+banner. `data-domains` is the hostname of `site.url`, so only the production
+domain is counted: localhost and Vercel preview deployments send nothing.
+
+Page views are automatic. Clicks are tracked per link: give a `Link` in
+`src/content/site.ts` an `event` name and the component renders it as
+`data-event`, which Analytics reports with `umami.track()`. It deliberately
+avoids Umami's `data-umami-event`, which holds same-tab links (in-page jumps,
+mailto) until its request finishes. Current events: `cta-see-ventures`,
+`cta-get-in-touch`, `cta-pitch-problem`, `contact-email`, `outbound-undrd`,
+`outbound-linkedin`, `outbound-github`.
