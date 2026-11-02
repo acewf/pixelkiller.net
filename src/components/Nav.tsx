@@ -1,5 +1,6 @@
 import { site } from "@/content/site";
 import { Plus, VoxelMark } from "./icons";
+import { NavDisclosure } from "./NavDisclosure";
 
 const LINK = "inline-flex min-h-11 items-center text-ink transition-colors duration-200 hover:text-accent";
 
@@ -30,14 +31,14 @@ export function Nav() {
                 </li>
               ))}
             </ul>
-            {/* Narrow screens: every link stays reachable behind a JS-free disclosure. */}
-            <details className="group min-[721px]:hidden">
-              <summary
-                aria-label={nav.menuLabel}
-                className={`${LINK} label-mono cursor-pointer list-none gap-2.5 [&::-webkit-details-marker]:hidden`}
-              >
-                {nav.menu}
-                <Plus className="block size-3.5 transition-transform duration-200 group-open:rotate-45" />
+            {/* Narrow screens: every link stays reachable behind a disclosure. */}
+            <NavDisclosure className="group min-[720px]:hidden">
+              <summary aria-label={nav.menuLabel} className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                {/* Older WebKit ignores display:flex on <summary>, so the row lives on a span. */}
+                <span className={`${LINK} label-mono gap-2.5`}>
+                  {nav.menu}
+                  <Plus className="block size-3.5 transition-transform duration-200 group-open:rotate-45" />
+                </span>
               </summary>
               <ul className="label-mono shell absolute inset-x-0 top-full flex flex-col border-y border-hairline bg-ground py-2">
                 {nav.links.map((link) => (
@@ -48,7 +49,7 @@ export function Nav() {
                   </li>
                 ))}
               </ul>
-            </details>
+            </NavDisclosure>
           </nav>
         </div>
       </header>
