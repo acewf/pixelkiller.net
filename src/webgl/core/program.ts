@@ -2,7 +2,8 @@
  * Compiles and links a program without blocking: with KHR_parallel_shader_compile
  * the driver works off-thread and completion is polled once per frame; without
  * it the result is checked straight away. Resolves null (after logging the
- * driver's message) on failure, or on abort / context loss.
+ * driver's message) on failure, or on abort / context loss. Abort with the
+ * reason "context-lost" when the objects belong to a context that was lost.
  */
 export function linkProgram(
   gl: WebGL2RenderingContext,
@@ -54,8 +55,12 @@ export function linkProgram(
   return new Promise((resolve) => {
     const poll = () => {
       if (signal?.aborted || gl.isContextLost()) {
-        release();
-        gl.deleteProgram(program);
+        // A hidden tab stalls this poll; if the context was lost (and maybe restored)
+        // meanwhile, these objects died with it and must not be deleted on the new one.
+        if (!gl.isContextLost() && signal?.reason !== "context-lost") {
+          release();
+          gl.deleteProgram(program);
+        }
         resolve(null);
       } else if (gl.getProgramParameter(program, parallel.COMPLETION_STATUS_KHR)) {
         resolve(finish());

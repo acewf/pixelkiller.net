@@ -68,7 +68,7 @@ export function createLatticeRenderer(): SceneRenderer {
       const { gl } = created;
       const linked = await linkProgram(gl, VERTEX, SOFT_POINT_FRAGMENT, "lattice", abort.signal);
       if (!linked || abort.signal.aborted) {
-        if (linked) gl.deleteProgram(linked);
+        if (linked && !created.contextLost) gl.deleteProgram(linked);
         return false;
       }
       program = linked;
@@ -99,7 +99,7 @@ export function createLatticeRenderer(): SceneRenderer {
     },
 
     dispose() {
-      abort.abort();
+      abort.abort(stage?.contextLost ? "context-lost" : "disposed");
       if (stage) {
         const { gl } = stage;
         stage.dispose();

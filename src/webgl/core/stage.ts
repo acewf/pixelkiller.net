@@ -3,7 +3,8 @@ export interface StageFrame {
   time: number;
   /**
    * Seconds for shader uniforms, kept small for float32: rebased only while the
-   * canvas is off-screen, so the jump is never seen. 0 while still.
+   * canvas is off-screen or the tab hidden (and just before it shows again), so
+   * the jump is never seen. 0 while still.
    */
   shaderTime: number;
   /** Drawing-buffer size in device pixels (what the browser actually allocated). */
@@ -52,7 +53,7 @@ export function isCanvasContextLost(canvas: HTMLCanvasElement): boolean {
 }
 
 const MAX_DPR = 1.5;
-/** Rebase the shader clock once it is this old (s), but only while off-screen. */
+/** Rebase the shader clock once it is this old (s), but only where the jump cannot be seen. */
 const SHADER_REBASE_AFTER = 3600;
 /** Hard wrap (s), reachable only by a canvas left on screen for a whole day. */
 const SHADER_WRAP = 86_400;
@@ -125,15 +126,26 @@ export function createStage(canvas: HTMLCanvasElement): Stage | null {
     schedule();
   };
 
+  // Restart the shader clock whenever nobody can see the jump: while off-screen,
+  // and just before the first frame after coming back on screen or to the tab.
+  const rebaseIfStale = () => {
+    const now = performance.now();
+    if ((now - shaderEpoch) / 1000 > SHADER_REBASE_AFTER) shaderEpoch = now;
+  };
+
   const onMotionChange = () => {
     still = motion.matches;
     invalidate();
   };
   const visibility = new IntersectionObserver((entries) => {
+    const wasVisible = visible;
     for (const entry of entries) visible = entry.isIntersecting;
+    if (visible !== wasVisible) rebaseIfStale();
     if (visible) invalidate();
-    else if ((performance.now() - shaderEpoch) / 1000 > SHADER_REBASE_AFTER) shaderEpoch = performance.now();
   });
+  const onDocumentVisibility = () => {
+    if (document.visibilityState === "visible") rebaseIfStale();
+  };
   const resize = new ResizeObserver((entries) => {
     const box = entries[entries.length - 1].contentRect;
     cssWidth = box.width;
@@ -163,6 +175,7 @@ export function createStage(canvas: HTMLCanvasElement): Stage | null {
   };
 
   motion.addEventListener("change", onMotionChange);
+  document.addEventListener("visibilitychange", onDocumentVisibility);
   visibility.observe(canvas);
   resize.observe(canvas);
   watchRatio();
@@ -186,6 +199,7 @@ export function createStage(canvas: HTMLCanvasElement): Stage | null {
       visibility.disconnect();
       resize.disconnect();
       motion.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onDocumentVisibility);
       ratio?.removeEventListener("change", onRatioChange);
       canvas.removeEventListener("webglcontextlost", onLost);
       if (!gl.isContextLost()) resetState(gl);

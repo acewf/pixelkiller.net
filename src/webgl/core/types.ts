@@ -17,9 +17,9 @@ export interface NdcRect {
 }
 
 export interface PhaseState {
-  /** Index of the shape currently on screen. */
+  /** Index of the shape to highlight; switches at the middle of each morph. */
   phase: number;
-  /** 0..1 through the current phase's hold + transition. */
+  /** 0..1 from the switch to `phase` until the switch to the next one (1 while still). */
   progress: number;
 }
 

@@ -7,7 +7,7 @@ const EASE = "ease-[cubic-bezier(.2,.7,.1,1)]";
 
 export function Ventures() {
   const { ventures } = site;
-  const { flagship, lab, open } = ventures;
+  const { flagship, open } = ventures;
   return (
     <section id={ventures.id} aria-labelledby="ventures-title" className="border-t border-hairline">
       <div className="shell section-y">
@@ -57,41 +57,28 @@ export function Ventures() {
           <FleetBoard board={flagship.board} />
         </article>
 
-        <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(420px,100%),1fr))] gap-4">
-          <article
-            aria-labelledby="lab-title"
-            className="reveal relative flex min-h-[280px] flex-col gap-3.5 overflow-hidden border border-line/12 p-[clamp(24px,3vw,40px)]"
-          >
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-              <div className="scan-line absolute inset-x-0 top-0 h-px bg-accent opacity-55" />
-            </div>
-            <p className="label-mono text-muted">{lab.kicker}</p>
-            <h3 id="lab-title" className="font-display text-card font-[760] [font-stretch:116%]">
-              {lab.title}
-            </h3>
-            <p className="mt-auto font-mono text-[14px] leading-[1.6] text-muted">{lab.body}</p>
-          </article>
-
-          <article
-            aria-labelledby="open-title"
-            className="reveal flex min-h-[280px] flex-col gap-3.5 bg-accent p-[clamp(24px,3vw,40px)] text-on-accent"
-          >
+        {/* The open slot spans the row as a call to action: copy left, button bottom right. */}
+        <article
+          aria-labelledby="open-title"
+          className="reveal mt-4 flex flex-wrap items-end justify-between gap-x-12 gap-y-7 bg-accent p-[clamp(24px,3.4vw,48px)] text-on-accent"
+        >
+          <div className="flex flex-[1_1_420px] flex-col gap-3.5">
             <p className="label-mono">{open.kicker}</p>
             <h3 id="open-title" className="font-display text-card font-[780] [font-stretch:116%]">
               {open.title}
             </h3>
-            <p className="max-w-[40ch] text-[17px] leading-[1.5] font-medium">{open.body}</p>
-            <a
-              href={open.cta.href}
-              className={`group mt-auto inline-flex min-h-[52px] items-center gap-3.5 self-start rounded-[2px] bg-ground px-[22px] text-base font-semibold text-ink transition-transform duration-300 ${EASE} hover:-translate-y-0.5 focus-visible:outline-on-accent`}
-            >
-              {open.cta.label}
-              <ArrowRight
-                className={`block size-[18px] transition-transform duration-300 ${EASE} group-hover:translate-x-1`}
-              />
-            </a>
-          </article>
-        </div>
+            <p className="max-w-[46ch] text-[17px] leading-[1.5] font-medium">{open.body}</p>
+          </div>
+          <a
+            href={open.cta.href}
+            className={`group inline-flex min-h-[52px] flex-none items-center gap-3.5 rounded-[2px] bg-ground px-[22px] text-base font-semibold text-ink transition-transform duration-300 ${EASE} hover:-translate-y-0.5 focus-visible:outline-on-accent`}
+          >
+            {open.cta.label}
+            <ArrowRight
+              className={`block size-[18px] transition-transform duration-300 ${EASE} group-hover:translate-x-1`}
+            />
+          </a>
+        </article>
       </div>
     </section>
   );

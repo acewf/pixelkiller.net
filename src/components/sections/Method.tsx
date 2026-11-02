@@ -25,7 +25,7 @@ export function Method() {
               </span>
               <h3 className="flex-[1_1_300px] font-display text-row font-bold [font-stretch:112%]">{step.title}</h3>
               <p className="flex-[1.3_1_340px] text-[17px] leading-[1.55] text-muted">{step.body}</p>
-              <ArrowLong className="size-7 flex-none self-center opacity-30 transition-[opacity,transform,color] duration-[400ms] ease-[cubic-bezier(.2,.7,.1,1)] group-hover:translate-x-2 group-hover:text-accent group-hover:opacity-100" />
+              <ArrowLong className="size-7 flex-none self-center opacity-30 transition-[opacity,translate,color] duration-[400ms] ease-[cubic-bezier(.2,.7,.1,1)] group-hover:translate-x-2 group-hover:text-accent group-hover:opacity-100" />
             </li>
           ))}
         </ol>

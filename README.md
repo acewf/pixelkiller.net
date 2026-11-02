@@ -32,8 +32,9 @@ src/
   app/
     layout.tsx        fonts, metadata, <html lang="en-GB" data-theme>
     page.tsx          the one page: Nav, sections, Footer
+    not-found.tsx     404 page (same Nav and Footer)
     globals.css       Tailwind, design tokens, themes, motion
-    icon.svg          favicon (the voxel-cube mark)
+    icon.svg, favicon.ico   favicon (the voxel-cube mark; .ico holds 16/32/48 px)
     apple-icon.tsx, opengraph-image.tsx   raster icon and social card (next/og)
     robots.ts, sitemap.ts
   content/site.ts     all copy, typed as SiteContent
@@ -57,10 +58,19 @@ src/
 
 Only the canvases and the illustrative parts counter are client components;
 everything else renders on the server. The scenes start when the browser is
-idle after hydration, and each canvas reports its state as `data-webgl="on" | "off"`
-(off when WebGL is unavailable or the context is lost; a restored context
-remounts the scene). `/projects`, the old portfolio route, redirects
-permanently to `/#story`.
+idle after hydration. Each scene reports its state as `data-webgl` on its
+container (the hero `<section>`, the AI `<figure>`), not on the canvas:
+
+- `"on"`: drawing.
+- `"lost"`: the GPU context dropped. Layout stays as it is (the hero readout is
+  hidden, the AI figure keeps its box), and the scene remounts when the context
+  is restored.
+- `"off"`: no WebGL2, a failed mount, or no restore within `RESTORE_TIMEOUT_MS`
+  (src/components/scene/mountScene.ts). The AI figure collapses; the hero keeps
+  its layout.
+
+Section links use `/#id`, so the nav works from any route, including the 404
+page. `/projects`, the old portfolio route, redirects permanently to `/#story`.
 
 ## Theming
 
@@ -97,10 +107,11 @@ To add a hero renderer (for example a line-art or dither look):
 
 1. Implement `SceneRenderer` from `src/webgl/core/types.ts`: an async
    `mount(canvas, options)` and `dispose()`, plus whichever of `setPointer`,
-   `setScroll` and `setSafeZone` it uses. Build it on `createStage(canvas, options)`
-   so it gets the shared context, resizing, the idle loop, context-loss
-   handling and the reduced-motion still for free; link with `linkProgram`; and
-   draw the same scene from `buildMorphScene` / `src/webgl/scene/shapes.ts`.
+   `setScroll` and `setSafeZone` it uses. Build it on `createStage(canvas)` (it
+   takes no options) so it gets the shared context, resizing, the idle loop,
+   the pause on context loss and the reduced-motion still for free; link with
+   `linkProgram`; and draw the same scene from `buildMorphScene` /
+   `src/webgl/scene/shapes.ts`. `mountScene` owns restore and remounting.
 2. Add its id to `HeroRendererId` in `themes.ts`, register its factory in
    `src/webgl/renderers/index.ts`, and point a theme at it.
 

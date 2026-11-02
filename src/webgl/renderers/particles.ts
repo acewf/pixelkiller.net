@@ -80,10 +80,13 @@ void main(){
   float ex = 0.07, ey = 0.09;
   float sx2 = smoothstep(uSafe.x - ex, uSafe.x + ex, ndc.x) * (1.0 - smoothstep(uSafe.z - ex, uSafe.z + ex, ndc.x));
   float sy2 = smoothstep(uSafe.y - ey, uSafe.y + ey, ndc.y) * (1.0 - smoothstep(uSafe.w - ey, uSafe.w + ey, ndc.y));
-  float b = mix(bright(uFrom), bright(uTo), lp);
+  // Brightness above 1.5 carries SIGNAL_OFFSET: that shape draws the point in the accent.
+  float bFrom = bright(uFrom), bTo = bright(uTo);
+  float sFrom = step(1.5, bFrom), sTo = step(1.5, bTo);
+  float b = mix(bFrom - 2.0 * sFrom, bTo - 2.0 * sTo, lp);
   float tw = 0.8 + 0.2 * sin(uTime * 1.9 + aR.w * 6.2831853);
   float nearK = 1.0 - smoothstep(uCamZ - 1.4, uCamZ + 1.6, clip.w);
-  float acc = aR.z;
+  float acc = max(aR.z, mix(sFrom, sTo, lp));
   vCol = mix(uInk, uAccent, acc);
   vA = (0.05 + 0.5 * b) * tw * mix(0.55, 1.0, nearK) * (1.0 - 0.6 * uScatter) * (1.0 + 1.2 * fall) * mix(1.0, 1.7, acc);
   vA *= 1.0 - 0.74 * sx2 * sy2;
@@ -129,7 +132,7 @@ export function createParticlesRenderer(): SceneRenderer {
       const scene = morphScene();
       const linked = await linking;
       if (!linked || abort.signal.aborted) {
-        if (linked) gl.deleteProgram(linked);
+        if (linked && !created.contextLost) gl.deleteProgram(linked);
         return false;
       }
       program = linked;
@@ -157,15 +160,19 @@ export function createParticlesRenderer(): SceneRenderer {
         let from = STILL_PHASE;
         let to = STILL_PHASE;
         let progress = 0;
-        let local = PERIOD;
+        let readout = { phase: STILL_PHASE, progress: 1 };
         if (!still) {
           const cycle = time % (PERIOD * PHASES);
           from = Math.floor(cycle / PERIOD);
-          local = cycle - from * PERIOD;
+          const local = cycle - from * PERIOD;
           to = (from + 1) % PHASES;
           progress = local < HOLD ? 0 : (local - HOLD) / TRANSITION;
+          // The readout switches at the middle of each morph, and its bar runs from one switch to the next.
+          const shifted = (time + TRANSITION / 2) % (PERIOD * PHASES);
+          const phase = Math.floor(shifted / PERIOD);
+          readout = { phase, progress: shifted / PERIOD - phase };
         }
-        onPhase?.({ phase: progress < 0.5 ? from : to, progress: Math.min(1, local / PERIOD) });
+        onPhase?.(readout);
 
         const dt = Math.min(0.1, Math.max(0, time - lastTime));
         lastTime = time;
@@ -230,7 +237,7 @@ export function createParticlesRenderer(): SceneRenderer {
     },
 
     dispose() {
-      abort.abort();
+      abort.abort(stage?.contextLost ? "context-lost" : "disposed");
       if (stage) {
         const { gl } = stage;
         stage.dispose();

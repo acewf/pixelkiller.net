@@ -27,11 +27,15 @@ export interface SiteContent {
   skipLink: string;
   /** Appended, visually hidden, to links that open a new tab. */
   newTab: string;
+  /** Section links use "/#id" so they work from any route, the 404 page included. */
   nav: {
     label: string;
     homeLabel: string;
-    /** `compact: false` links are hidden on narrow screens. */
-    links: (Link & { compact: boolean })[];
+    homeHref: string;
+    /** Narrow screens fold the links into a disclosure with this label. */
+    menu: string;
+    menuLabel: string;
+    links: Link[];
   };
   hero: {
     eyebrow: string;
@@ -71,7 +75,6 @@ export interface SiteContent {
         events: { text: string; tone: Tone }[];
       };
     };
-    lab: { kicker: string; title: string; body: string };
     open: { kicker: string; title: string; body: string; cta: Link };
   };
   method: SectionMeta & { title: string; steps: { title: string; body: string }[] };
@@ -94,6 +97,7 @@ export interface SiteContent {
   };
   contact: SectionMeta & { prompt: string; title: string; email: Link; linksLabel: string; links: Link[] };
   footer: { line: string; backToTop: string };
+  notFound: { title: string; code: string; label: string; heading: string; body: string; cta: Link };
 }
 
 const email = "contact@pixelkiller.net";
@@ -109,19 +113,22 @@ export const site: SiteContent = {
   nav: {
     label: "Primary",
     homeLabel: "Pixelkiller, home",
+    homeHref: "/#top",
+    menu: "Menu",
+    menuLabel: "Site menu",
     links: [
-      { label: "Ventures", href: "#ventures", compact: true },
-      { label: "Method", href: "#method", compact: false },
-      { label: "AI", href: "#ai", compact: false },
-      { label: "Story", href: "#story", compact: false },
-      { label: "Contact", href: "#contact", compact: true },
+      { label: "Ventures", href: "/#ventures" },
+      { label: "Method", href: "/#method" },
+      { label: "AI", href: "/#ai" },
+      { label: "Story", href: "/#story" },
+      { label: "Contact", href: "/#contact" },
     ],
   },
   hero: {
     eyebrow: "Venture studio · United Kingdom",
     titleLines: ["From pixels", "to production."],
     lead: "Pixelkiller is the venture studio of Pedro Martins. Twenty years building for screens — Flash, games, AAA launches — now pointed at the industries that make things, with AI in the loop.",
-    primary: { label: "See the ventures", href: "#ventures" },
+    primary: { label: "See the ventures", href: "/#ventures" },
     secondary: { label: "Get in touch", href: `mailto:${email}` },
     readout: {
       caption: "Particle field · WebGL2",
@@ -183,11 +190,6 @@ export const site: SiteContent = {
           { text: "Lathe 03 · correction −0.013 mm on T02", tone: "info" },
         ],
       },
-    },
-    lab: {
-      kicker: "Venture 02",
-      title: "In the lab",
-      body: "[Venture name and industry: to be announced]",
     },
     open: {
       kicker: "Open slot",
@@ -302,5 +304,13 @@ export const site: SiteContent = {
   footer: {
     line: "Pixelkiller Ltd · United Kingdom · © 2026",
     backToTop: "Back to top ↑",
+  },
+  notFound: {
+    title: "Page not found · Pixelkiller",
+    code: "404",
+    label: "Page not found",
+    heading: "This page isn’t on the floor.",
+    body: "The link may be out of date, or the page has moved on. Start again from the home page.",
+    cta: { label: "Back to the home page", href: "/" },
   },
 };

@@ -12,6 +12,8 @@ export interface ShapeTargets {
   positions: Float32Array;
   /** Shading per point, 0..1 (face light, edge emphasis, node vs arc). */
   brightness: Float32Array;
+  /** 1 for points drawn in the accent colour in this shape (the mark's signal cell). */
+  signal?: Uint8Array;
 }
 
 function rotate(p: Vec3, axis: "x" | "y" | "z", angle: number): Vec3 {
@@ -35,10 +37,15 @@ const createTargets = (count: number): ShapeTargets => ({
   brightness: new Float32Array(count),
 });
 
-/** Cells removed from the 3×3×3 mark, as "x,y,z" (the killed pixels). */
-const KILLED_VOXELS = new Set(["2,2,2", "0,2,1", "2,0,1", "1,1,2"]);
+/**
+ * Cells removed from the 3×3×3 mark, as "x,y,z" (the killed pixels), and the
+ * voxel whose top face is the accent cell: the same cells as the 2D logo
+ * (src/components/icons.tsx).
+ */
+const KILLED_VOXELS = new Set(["2,2,2", "2,0,1"]);
+const SIGNAL_VOXEL = "0,2,1";
 
-/** The Pixelkiller mark: a 3×3×3 voxel cube with four cells killed, seen isometrically. */
+/** The Pixelkiller mark: a 3×3×3 voxel cube with two cells killed and one lit, seen isometrically. */
 export function voxelCube(count: number, rng: Rng): ShapeTargets {
   const size = 0.4;
   const half = size / 2 - 0.034;
@@ -51,7 +58,7 @@ export function voxelCube(count: number, rng: Rng): ShapeTargets {
     [0, 1, 0, 1.0],
     [0, 0, 1, 0.82],
   ];
-  const faces: { c: Vec3; u: Vec3; v: Vec3; b: number }[] = [];
+  const faces: { c: Vec3; u: Vec3; v: Vec3; b: number; signal: boolean }[] = [];
   for (let i = 0; i < 3; i++)
     for (let j = 0; j < 3; j++)
       for (let k = 0; k < 3; k++) {
@@ -63,6 +70,7 @@ export function voxelCube(count: number, rng: Rng): ShapeTargets {
             u: dx ? [0, 1, 0] : [1, 0, 0],
             v: dz ? [0, 1, 0] : [0, 0, 1],
             b,
+            signal: dy === 1 && `${i},${j},${k}` === SIGNAL_VOXEL,
           });
         }
       }
@@ -70,6 +78,8 @@ export function voxelCube(count: number, rng: Rng): ShapeTargets {
   const isoY = -Math.PI / 4;
   const isoX = Math.atan(1 / Math.SQRT2);
   const out = createTargets(count);
+  const signal = new Uint8Array(count);
+  out.signal = signal;
   for (let n = 0; n < count; n++) {
     const face = faces[Math.floor(rng() * faces.length)];
     const edge = rng() < 0.3;
@@ -90,6 +100,7 @@ export function voxelCube(count: number, rng: Rng): ShapeTargets {
       face.c[2] + face.u[2] * a + face.v[2] * b,
     ];
     write(out, n, rotate(rotate(p, "y", isoY), "x", isoX), Math.min(1, face.b + (edge ? 0.2 : 0)));
+    signal[n] = face.signal ? 1 : 0;
   }
   return out;
 }
@@ -110,6 +121,8 @@ export function pixelScreen(mark: ShapeTargets, rng: Rng): ShapeTargets {
   const bezel = Math.min(1400, count - background);
 
   const out = createTargets(count);
+  const signal = new Uint8Array(count);
+  out.signal = signal;
   for (let n = 0; n < count; n++) {
     let gx: number;
     let gy: number;
@@ -129,6 +142,7 @@ export function pixelScreen(mark: ShapeTargets, rng: Rng): ShapeTargets {
       gx = Math.round((mark.positions[n * 3] + width / 2) / px);
       gy = Math.round((mark.positions[n * 3 + 1] + height / 2) / py);
       b = mark.brightness[n] * 0.9;
+      signal[n] = mark.signal?.[n] ?? 0;
     }
     write(out, n, [gx * px - width / 2, gy * py - height / 2, 0], b);
   }
@@ -279,9 +293,13 @@ export function network(count: number, rng: Rng): ShapeTargets {
 /** Floats per point in MorphScene.data. */
 export const MORPH_STRIDE = 20;
 
+/** Added to a brightness slot for signal points; renderers decode values ≥ 1.5. */
+export const SIGNAL_OFFSET = 2;
+
 /**
  * Interleaved morph targets, per point:
- * pixels xyz, mark xyz, shaft xyz, network xyz (12) · brightness ×4 (4) ·
+ * pixels xyz, mark xyz, shaft xyz, network xyz (12) · brightness ×4 (4, plus
+ * SIGNAL_OFFSET where the point is a signal point in that shape) ·
  * delay, size, accent flag, twinkle phase (4).
  */
 export interface MorphScene {
@@ -331,8 +349,8 @@ export function buildMorphScene(count: number, seed: number): MorphScene {
     copy(o + 3, mark, n);
     copy(o + 6, part, pi);
     copy(o + 9, net, ni);
-    data[o + 12] = pixels.brightness[n];
-    data[o + 13] = mark.brightness[n];
+    data[o + 12] = pixels.brightness[n] + (pixels.signal?.[n] ? SIGNAL_OFFSET : 0);
+    data[o + 13] = mark.brightness[n] + (mark.signal?.[n] ? SIGNAL_OFFSET : 0);
     data[o + 14] = part.brightness[pi];
     data[o + 15] = net.brightness[ni];
     // Delay grows from the centre outwards, so morphs bloom.

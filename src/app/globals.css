@@ -96,7 +96,8 @@
   }
 
   a:focus-visible,
-  button:focus-visible {
+  button:focus-visible,
+  summary:focus-visible {
     outline: 2px solid var(--pk-accent);
     outline-offset: 4px;
     border-radius: 2px;
@@ -176,10 +177,6 @@
     animation: pk-blink 1.06s steps(1) infinite;
   }
 
-  .scan-line {
-    animation: pk-scan 5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  }
-
   /* Hero phase readout, driven by data-phase and --pk-phase-progress, which the
      hero scene sets on its section. */
   [data-phase-item] {
@@ -238,8 +235,7 @@
   .line-mask > span,
   .fade-in,
   .live-dot,
-  .caret,
-  .scan-line {
+  .caret {
     animation: none !important;
   }
 }
@@ -291,14 +287,5 @@
 @keyframes pk-blink {
   50% {
     opacity: 0;
-  }
-}
-
-@keyframes pk-scan {
-  from {
-    top: 0;
-  }
-  to {
-    top: 100%;
   }
 }

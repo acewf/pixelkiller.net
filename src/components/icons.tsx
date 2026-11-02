@@ -26,6 +26,15 @@ export function ArrowUpRight({ className }: IconProps) {
   );
 }
 
+/** "+" that the menu turns into "×" when open. */
+export function Plus({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 14 14" aria-hidden="true" className={className}>
+      <path d="M7 1v12M1 7h12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 type Cell = "top" | "left" | "right" | "killed" | "signal";
 
 const CELL_CLASS: Record<Cell, string> = {

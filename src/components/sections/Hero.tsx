@@ -39,7 +39,7 @@ export function Hero() {
               </a>
               <a
                 href={hero.secondary.href}
-                className={`inline-flex min-h-[52px] items-center rounded-[2px] border border-line/30 px-[22px] text-base font-[550] text-ink transition-[transform,border-color] duration-300 ${EASE} hover:-translate-y-0.5 hover:border-ink`}
+                className={`inline-flex min-h-[52px] items-center rounded-[2px] border border-line/30 px-[22px] text-base font-[550] text-ink transition-[translate,border-color] duration-300 ${EASE} hover:-translate-y-0.5 hover:border-ink`}
               >
                 {hero.secondary.label}
               </a>
